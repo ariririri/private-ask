@@ -1,11 +1,16 @@
-using Genie
-import Genie.Router: route
-import Genie.Renderer: json!
+using Morsel
+using HttpCommon    # For FileResponse(), which serves static files
+using JSON
+using ExcelReaders # require pip install xlrd
 
-Genie.config.run_as_server = true
+app = Morsel.app()
 
-route("/") do
-  (:message => "Hi there!") |> json!
+route(app, GET | POST | PUT, "/") do req, res
+    "This is the root"
 end
 
-Genie.AppServer.startup()
+get(app, "/about") do req, res
+    "This app is running on Morsel !!"
+end
+
+start(app, int(ARGS[1]))
